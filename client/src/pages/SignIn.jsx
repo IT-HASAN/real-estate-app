@@ -10,10 +10,10 @@ export default function SignIn() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
+    setFormData((prev) => ({
+      ...prev,
       [e.target.id]: e.target.value
-    });
+    }));
   };
   const handleSubmit = async (e) => {
     e.preventDefault();

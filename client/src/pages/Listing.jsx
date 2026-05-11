@@ -32,7 +32,7 @@ export default function Listing() {
         setListing(data);
         setLoading(false);
         setError(false);
-      } catch (error) {
+      } catch {
         setError(true);
         setLoading(false);
       }
@@ -47,9 +47,14 @@ export default function Listing() {
       {listing && !loading && !error && (
         <div>
           <Swiper navigation>
-            {listing.imageUrls.map((url) => (
-              <SwiperSlide key={url}>
-                <div className='h-[550px] cursor-grab' style={{background: `url(${url}) center no-repeat`, backgroundSize: 'cover'}}></div>
+            {listing.images.map((img) => (
+              <SwiperSlide key={img._id}>
+                <div 
+                  className='h-[550px] cursor-grab' 
+                  style={{
+                    background: `url(${img.url}) center no-repeat`, backgroundSize: 'cover'
+                  }}
+                ></div>
               </SwiperSlide>
             ))}
           </Swiper>

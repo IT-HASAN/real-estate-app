@@ -1,3 +1,4 @@
+import cloudinary from '../utils/cloudinary.js';
 import Listing from '../models/listing.model.js';
 import { errorHandler } from '../utils/error.js';
 
@@ -22,7 +23,16 @@ export const deleteListing = async (req, res, next) => {
   }
 
   try {
+    if (listing.images?.length > 0) {
+      const deletePromises = listing.images
+      .filter(img => img?.path)
+      .map(img => cloudinary.uploader.destroy(img.path));
+
+      await Promise.allSettled(deletePromises);
+    }
+    
     await Listing.findByIdAndDelete(req.params.id);
+
     res.status(200).json('Listing has been deleted');
   } catch (error) {
     next(error);
@@ -31,6 +41,7 @@ export const deleteListing = async (req, res, next) => {
 
 export const updateListing = async (req, res, next) => {
   const listing = await Listing.findById(req.params.id);
+  
   if (!listing) {
     return next(errorHandler(404, 'Listing not found'));
   }
@@ -40,11 +51,22 @@ export const updateListing = async (req, res, next) => {
   }
 
   try {
+    if (req.body.removedImages?.length > 0) {
+      const deletePromises = req.body.removedImages
+      .filter(img => img?.path)
+      .map(img => cloudinary.uploader.destroy(img.path));
+
+      await Promise.allSettled(deletePromises);
+    }
+
+    delete req.body.removedImages;
+
     const updatedListing = await Listing.findByIdAndUpdate(
       req.params.id,
       req.body,
       { new: true }
     );
+    
     res.status(200).json(updatedListing);
   } catch (error) {
     next(error);
@@ -55,7 +77,7 @@ export const getListing = async (req, res, next) => {
   try {
     const listing = await Listing.findById(req.params.id);
     if (!listing) {
-      return next(errorHandler(404, 'listing not found'));
+      return next(errorHandler(404, 'Listing not found'));
     }
     res.status(200).json(listing);
   } catch (error) {

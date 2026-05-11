@@ -46,8 +46,13 @@ const listingSchema = new mongoose.Schema(
       type: Boolean,
       required: true
     },
-    imageUrls: {
-      type: Array,
+    images: {
+      type: [
+        {
+          url: String,
+          path: String
+        }
+      ],
       required: true
     },
     userRef: {
