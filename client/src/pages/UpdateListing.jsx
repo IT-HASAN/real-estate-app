@@ -246,56 +246,64 @@ export default function UpdateListing() {
             onChange={handleChange}
             value={formData.address}
           />
-          <div className='flex gap-6 flex-wrap'>
-            <div className='flex gap-2'>
-              <input
-                type="checkbox"
-                id="sale"
-                className='w-5'
-                onChange={handleChange}
-                checked={formData.type === 'sale'}
-              />
-              <span>Sale</span>
+          <div className='flex gap-4'>
+            <span className='font-semibold'>Type:</span>
+            <div className='flex gap-6 flex-wrap'>
+              <div className='flex gap-2'>
+                <input
+                  type="radio"
+                  id="sale"
+                  className='w-5 cursor-pointer'
+                  onChange={handleChange}
+                  checked={formData.type === 'sale'}
+                />
+                <span>Sale</span>
+              </div>
+              <div className='flex gap-2'>
+                <input
+                  type="radio"
+                  id="rent"
+                  className='w-5 cursor-pointer'
+                  onChange={handleChange}
+                  checked={formData.type === 'rent'}
+                />
+                <span>Rent</span>
+              </div>
+              <div className='flex gap-2'>
+                <input
+                  type="checkbox"
+                  id="offer"
+                  className='w-5 cursor-pointer'
+                  onChange={handleChange}
+                  checked={formData.offer}
+                />
+                <span>Offer</span>
+              </div>
             </div>
-            <div className='flex gap-2'>
-              <input
-                type="checkbox"
-                id="rent"
-                className='w-5'
-                onChange={handleChange}
-                checked={formData.type === 'rent'}
-              />
-              <span>Rent</span>
-            </div>
-            <div className='flex gap-2'>
-              <input
-                type="checkbox"
-                id="parking"
-                className='w-5'
-                onChange={handleChange}
-                checked={formData.parking}
-              />
-              <span>Parking</span>
-            </div>
-            <div className='flex gap-2'>
-              <input
-                type="checkbox"
-                id="furnished"
-                className='w-5'
-                onChange={handleChange}
-                checked={formData.furnished}
-              />
-              <span>Furnished</span>
-            </div>
-            <div className='flex gap-2'>
-              <input
-                type="checkbox"
-                id="offer"
-                className='w-5'
-                onChange={handleChange}
-                checked={formData.offer}
-              />
-              <span>Offer</span>
+          </div>
+          <div className='flex gap-4'>
+            <span className='font-semibold'>Amenities:</span>
+            <div className='flex gap-6 flex-wrap'>
+              <div className='flex gap-2'>
+                <input
+                  type="checkbox"
+                  id="parking"
+                  className='w-5 cursor-pointer'
+                  onChange={handleChange}
+                  checked={formData.parking}
+                />
+                <span>Parking</span>
+              </div>
+              <div className='flex gap-2'>
+                <input
+                  type="checkbox"
+                  id="furnished"
+                  className='w-5 cursor-pointer'
+                  onChange={handleChange}
+                  checked={formData.furnished}
+                />
+                <span>Furnished</span>
+              </div>
             </div>
           </div>
           <div className='flex flex-wrap gap-6'>
@@ -325,6 +333,8 @@ export default function UpdateListing() {
               />
               <p>Bathrooms</p>
             </div>
+          </div>
+          <div className='flex flex-wrap gap-6'>
             <div className='flex items-center gap-2'>
               <input
                 type="number"
@@ -339,31 +349,31 @@ export default function UpdateListing() {
               <div className='flex flex-col items-center'>
                 <p>Regular price</p>
                 {formData.type === 'rent' && (
-                  <span className='text-xs'>($ / Month)</span>
+                  <span className='text-xs'>(£ / Month)</span>
                 )}
               </div>
             </div>
-            {formData.offer && (
-              <div className='flex items-center gap-2'>
-                <input 
-                  type="number"
-                  id="discountedPrice"
-                  min="0"
-                  max="5000000"
-                  required
-                  className='p-3 border border-gray-300 rounded-lg' 
-                  onChange={handleChange}
-                  value={formData.discountedPrice}
-                />
-                <div className='flex flex-col items-center'>
-                  <p>Discounted price</p>
-                  {formData.type === 'rent' && (
-                    <span className='text-xs'>($ / Month)</span>
-                  )}
-                </div>
-              </div>
-            )}
           </div>
+          {formData.offer && (
+            <div className='flex items-center gap-2'>
+              <input 
+                type="number"
+                id="discountedPrice"
+                min="0"
+                max="5000000"
+                required
+                className='p-3 border border-gray-300 rounded-lg' 
+                onChange={handleChange}
+                value={formData.discountedPrice}
+              />
+              <div className='flex flex-col items-center'>
+                <p>Discounted price</p>
+                {formData.type === 'rent' && (
+                  <span className='text-xs'>(£ / Month)</span>
+                )}
+              </div>
+            </div>
+          )}
         </div>
         <div className='flex flex-col flex-1 gap-4'>
           <p className='font-semibold'>Images:
@@ -384,7 +394,7 @@ export default function UpdateListing() {
           {formData.images.length > 0 && formData.images.map((img, index) => (
             <div key={index} className='flex justify-between p-3 border items-center'>
               <img src={img.url} alt="listing image" className='w-20 h-20 object-contain rounded-lg' />
-              <button type="button" onClick={() => handleRemoveImage(index)} className='p-3 text-red-700 rounded-lg uppercase hover:opacity-75'>Delete</button>
+              <button type="button" onClick={() => handleRemoveImage(index)} className='bg-red-700 text-white rounded-lg p-1 uppercase hover:opacity-95'>Delete</button>
             </div>
           ))}
 
@@ -398,7 +408,7 @@ export default function UpdateListing() {
               <button
                 type="button"
                 onClick={() => handleRemoveNewFile(i)}
-                className="p-3 text-red-700 uppercase"
+                className="bg-red-700 text-white rounded-lg p-1 uppercase hover:opacity-95"
               >
                 Remove
               </button>
