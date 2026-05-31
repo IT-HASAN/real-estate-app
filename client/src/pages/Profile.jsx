@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useRef, useState, useEffect, useCallback } from 'react';
-import { updateUserStart, updateUserSuccess, updateUserFailure, deleteUserFailure, deleteUserStart, deleteUserSuccess, signOutUserStart, signOutUserFailure, signOutUserSuccess } from '../redux/user/userSlice';
+import { updateUserStart, updateUserSuccess, updateUserFailure, deleteUserFailure, deleteUserStart, deleteUserSuccess } from '../redux/user/userSlice';
 import { Link } from 'react-router-dom';
 
 export default function Profile() {
@@ -203,105 +203,90 @@ export default function Profile() {
     }
   };
 
-  const handleSignOut = async () => {
-    try {
-      dispatch(signOutUserStart());
-      
-      const res = await fetch(`/api/auth/signout`, {
-        credentials: 'include'
-      });
-
-      const data = await res.json();
-
-      if (!res.ok || data.success === false) {
-        dispatch(signOutUserFailure(data.message));
-        return;
-      }
-      dispatch(signOutUserSuccess(data));
-    } catch (error) {
-      dispatch(signOutUserFailure(error.message));
-    }
-  }
-
   return (
     <div className='p-3 max-w-lg mx-auto'>
-      <h1 className='text-3xl font-semibold text-center my-7'>Profile</h1>
+      <h1 className='text-3xl font-semibold text-center my-7'>User Profile</h1>
       <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
         <input 
-          onChange={(e) => {
-            const file = e.target.files[0];
-            if (!file) return;
+            onChange={(e) => {
+              const file = e.target.files[0];
+              if (!file) return;
 
-            setFileUploading(true);
-            setFileUploadError('');
-            setFileUploadSuccess('');
-            setPreviewUrl(URL.createObjectURL(file));
-            setImgFile(file);
-          }} 
-          type="file" ref={imgFileRef} hidden accept="image/*" 
-        />
-        <img onClick={() => {
-            if (!fileUploading && imgFileRef.current) {
-              imgFileRef.current.value = null;
-              imgFileRef.current.click();
-            }
-          }}  
-          src={previewUrl || currentUser.avatar || '/default-avatar.png'} 
-          alt="profile"
-          onError={(e) => {
-            e.currentTarget.onerror = null;
-            e.currentTarget.src = '/default-avatar.png';
-          }}
-          className={`rounded-full h-24 w-24 object-cover self-center mt-2 ${fileUploading ? 'opacity-70 cursor-not-allowed' : 'cursor-pointer'}`}
-        />
-        <p className='text-sm self-center'>
-          {fileUploading && 
-            (<span className='text-slate-700'>Uploading...</span>)
-          }
-          {fileUploadError !== '' && (
-            <span className='text-red-700'>{fileUploadError}</span>)
-          }
-          {fileUploadSuccess !== '' && (
-            <span className='text-green-700'>{fileUploadSuccess}</span>)
-          }
-        </p>
-        <input 
-          type="text"
-          placeholder="username"
-          value={formData.username}
-          id="username"
-          className='border p-3 rounded-lg'
-          onChange={handleChange}
-        />
-        <input
-          type="email"
-          placeholder="email"
-          value={formData.email}
-          id="email"
-          className='border p-3 rounded-lg'
-          onChange={handleChange}
-        />
-        <input
-          type="password"
-          placeholder="password"
-          id="password"
-          className='border p-3 rounded-lg'
-          onChange={handleChange}
-        />
-        <button
-        disabled={loading}
-        className='bg-slate-700 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80'>
-          {loading ? 'Loading...' : 'Update'}
-        </button>
+              setFileUploading(true);
+              setFileUploadError('');
+              setFileUploadSuccess('');
+              setPreviewUrl(URL.createObjectURL(file));
+              setImgFile(file);
+            }} 
+            type="file" ref={imgFileRef} hidden accept="image/*" 
+          />
+          <img onClick={() => {
+              if (!fileUploading && imgFileRef.current) {
+                imgFileRef.current.value = null;
+                imgFileRef.current.click();
+              }
+            }}  
+            src={previewUrl || currentUser.avatar || '/default-avatar.png'} 
+            alt="user profile picture"
+            onError={(e) => {
+              e.currentTarget.onerror = null;
+              e.currentTarget.src = '/default-avatar.png';
+            }}
+            className={`rounded-full h-28 w-28 object-cover self-center mt-0 ${fileUploading ? 'opacity-70 cursor-not-allowed' : 'cursor-pointer'}`}
+          />
+          <p className='text-sm self-center font-semibold'>
+            {fileUploading ? (
+              <span className='text-slate-700'>Uploading...</span>
+            ) : fileUploadError !== '' ? (
+              <span className='text-red-700'>{fileUploadError}</span>
+            ) : fileUploadSuccess !== '' ? (
+              <span className='text-green-700'>{fileUploadSuccess}</span>
+            ) : (
+              <span>Click image to change</span>
+            )}
+          </p>
+          <input 
+            type="text"
+            placeholder="username"
+            value={formData.username}
+            id="username"
+            className='border p-3 rounded-lg focus:outline-none'
+            onChange={handleChange}
+          />
+          <input
+            type="email"
+            placeholder="email"
+            value={formData.email}
+            id="email"
+            className='border p-3 rounded-lg focus:outline-none'
+            onChange={handleChange}
+          />
+          <input
+            type="password"
+            placeholder="password"
+            id="password"
+            className='border p-3 rounded-lg focus:outline-none'
+            onChange={handleChange}
+          />
+          <button
+          disabled={loading}
+          className='bg-slate-700 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80'>
+            {loading ? 'Updating...' : 'Update Profile'}
+          </button>
       </form>
-      <div className='flex justify-between mt-5'>
-        <span onClick={handleDeleteUser} className='text-red-700 cursor-pointer'>Delete account</span>
-        <span onClick={handleSignOut}className='text-red-700 cursor-pointer'>Sign out</span>
-      </div>
-
-      
-      {error && <p className='text-red-700 mt-5'>{error}</p>}
-      {updateSuccess !== '' && <p className='text-green-700 mt-5'>{updateSuccess}</p>}
+      <button onClick={handleDeleteUser} className='bg-red-700 text-white rounded-lg mt-5 p-3 uppercase hover:opacity-95 disabled:opacity-80 w-full'>
+        Delete account
+      </button>
+      {error &&
+        <div className='text-sm text-center font-semibold p-3 w-full text-red-700'>
+          {error}
+        </div>
+      }
+      {updateSuccess !== '' && 
+        <div className='text-sm text-center font-semibold p-3 w-full text-green-700'>
+          {updateSuccess}
+        </div>
+      }
     </div>
   );
 }

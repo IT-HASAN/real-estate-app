@@ -139,7 +139,7 @@ export default function Search() {
               type="text"
               id="searchTerm"
               placeholder="Search..."
-              className='border rounded-lg p-3 w-full'
+              className='border rounded-lg p-3 w-full focus:outline-none'
               value={sidebarData.searchTerm}
               onChange={handleChange}
             />

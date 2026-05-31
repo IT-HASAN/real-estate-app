@@ -57,8 +57,11 @@ export default function Home() {
           <br />
           We have a wide range of properties for you to choose from.
         </div>
-        <Link to={"/search"} className='text-xs sm:text-sm text-blue-800 font-bold hover:underline'>
+        <Link to={"/search"} className='text-xs sm:text-sm text-blue-700 font-semibold hover:underline'>
           Let's get started...
+        </Link>
+        <Link to={"/about"} className='text-xs sm:text-sm text-blue-700 font-semibold hover:underline'>
+          About Real Estate
         </Link>
       </div>
 
@@ -82,7 +85,7 @@ export default function Home() {
           <div className="">
             <div className='my-3'>
               <h2 className='text-2xl font-semibold text-slate-600'>Recent offers</h2>
-              <Link className='text-sm text-blue-800 hover:underline' to={'/search?offer=true'}>
+              <Link className='text-sm text-blue-700 font-semibold hover:underline' to={'/search?offer=true'}>
                 Show more offers
               </Link>
             </div>
@@ -97,7 +100,7 @@ export default function Home() {
           <div className="">
             <div className='my-3'>
               <h2 className='text-2xl font-semibold text-slate-600'>Recent places for rent</h2>
-              <Link className='text-sm text-blue-800 hover:underline' to={'/search?type=rent'}>
+              <Link className='text-sm text-blue-700 font-semibold hover:underline' to={'/search?type=rent'}>
                 Show more places for rent
               </Link>
             </div>
@@ -112,7 +115,7 @@ export default function Home() {
           <div className="">
             <div className='my-3'>
               <h2 className='text-2xl font-semibold text-slate-600'>Recent places for sale</h2>
-              <Link className='text-sm text-blue-800 hover:underline' to={'/search?type=sale'}>
+              <Link className='text-sm text-blue-700 font-semibold hover:underline' to={'/search?type=sale'}>
                 Show more places for sales
               </Link>
             </div>

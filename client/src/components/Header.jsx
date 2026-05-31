@@ -1,13 +1,19 @@
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { FaSearch } from 'react-icons/fa';
+import { signOutUserStart, signOutUserFailure, signOutUserSuccess } from '../redux/user/userSlice';
 
 export default function Header() {
+  const dispatch = useDispatch();
   const { currentUser } = useSelector(state => state.user);
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
+
+  const [menuClicked, setMenuClicked] = useState(false);
+  const handleMenuClicked = () => setMenuClicked(!menuClicked);
+  const closeMenu = () => setMenuClicked(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -25,10 +31,30 @@ export default function Header() {
       setSearchTerm(searchTermFromUrl);
     }
   }, [location.search]);
+  
+  const handleSignOut = async () => {
+    try {
+      dispatch(signOutUserStart());
+      
+      const res = await fetch(`/api/auth/signout`, {
+        credentials: 'include'
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || data.success === false) {
+        dispatch(signOutUserFailure(data.message));
+        return;
+      }
+      dispatch(signOutUserSuccess(data));
+    } catch (error) {
+      dispatch(signOutUserFailure(error.message));
+    }
+  }
 
   return (
     <header className='bg-slate-200 shadow-md'>
-      <div className='flex justify-between items-center max-w-6xl mx-auto p-3'>
+      <div className='flex justify-between items-center max-w-6xl mx-auto p-3 relative'>
         <Link to="/">
         <h1 className='font-bold text-sm sm:text-xl flex flex-wrap'>
           <span className='text-slate-500'>Real</span>
@@ -43,32 +69,38 @@ export default function Header() {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <button >
+          <button>
             <FaSearch className='text-slate-600' />
           </button>
         </form>
-        <ul className='flex gap-4'>
-          <Link to="/">
-            <li className='hidden sm:inline text-slate-700 hover:underline'>Home</li>
-          </Link>
-          <Link to="/about">
-            <li className='hidden sm:inline text-slate-700 hover:underline'>About</li>
-          </Link>
+        <div className='w-fit h-fit'>
           {currentUser ? (
-            <Link to="/my-listings">
-              <li className='text-slate-700 hover:underline'>My Listings</li>
-            </Link>
+            <img className='rounded-full h-7 w-7 object-cover cursor-pointer' src={currentUser.avatar} alt="profile" onClick={handleMenuClicked} />
           ) : (
+            <Link to="/sign-in">
+              <button className='bg-slate-700 text-white rounded-lg py-1 px-2 hover:opacity-95'>Sign in</button>
+            </Link>
+          )}
+        </div>
+        <div className={menuClicked ? 'absolute top-[100%] right-0 z-[5] rounded-lg bg-slate-200 shadow-md' : 'hidden'} onMouseLeave={closeMenu}>
+          {currentUser ? (
+          <div className='flex flex-col p-2'>
+            <img className='rounded-full h-8 w-8 object-cover self-center' src={currentUser.avatar} alt="user profile picture" />
+            <span className='text-sm text-slate-700 text-center font-semibold'>{currentUser.username}</span>
+            <span className='text-xs text-slate-700 text-center'>{currentUser.email}</span>
+          </div>) : (
             <></>
           )}
-          <Link to="/profile">
-            {currentUser ? (
-              <img className='rounded-full h-7 w-7 object-cover' src={currentUser.avatar} alt="profile" />
-            ) : (
-              <li className='text-slate-700 hover:underline'>Sign in</li>
-            )}
-          </Link>
-        </ul>
+          <ul>
+            <Link to="/profile">
+              <li className='text-slate-700 text-sm hover:bg-slate-300 p-2 border-t-slate-300 border-t-[1px]' onClick={closeMenu}>User Profile</li>
+            </Link>
+            <Link to="/view-listings">
+              <li className='text-slate-700 text-sm hover:bg-slate-300 p-2 border-b-slate-300 border-b-[1px]' onClick={closeMenu}>Property Listings</li>
+            </Link>
+              <li className='text-slate-700 text-sm hover:bg-slate-300 p-2 cursor-pointer' onClick={handleSignOut}>Sign out</li>
+          </ul>
+        </div>
       </div>
     </header>
   );

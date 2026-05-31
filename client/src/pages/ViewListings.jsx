@@ -56,7 +56,7 @@ export default function MyListings() {
   
   return (
     <div className='p-3 max-w-lg mx-auto'>
-      <h1 className='text-3xl font-semibold text-center my-7'>Your Listings</h1>
+      <h1 className='text-3xl font-semibold text-center my-7'>Property Listings</h1>
       <div className='flex flex-col gap-4 overflow-y-auto h-[450px] bg-white p-3 border rounded-lg'>
         {loadListings ? (
           <div className='text-slate-700 font-semibold p-3 flex justify-center'>
