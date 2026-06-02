@@ -1,12 +1,26 @@
 import { useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import DeleteModal from '../components/DeleteModal';
 
-export default function MyListings() {
+export default function ViewListings() {
   const { currentUser } = useSelector((state) => state.user);
   const [loadListings, setLoadListings] = useState(false);
   const [listingsError, setListingsError] = useState(false);
   const [userListings, setUserListings] = useState([]);
+
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [listingForDeletion, setListingForDeletion] = useState(null);
+
+  const handleDeleteModal = (listing) => {
+    setListingForDeletion(listing);
+    setDeleteModal(true);
+  } 
+
+  const closeDeleteModal = () => {
+    setListingForDeletion(null);
+    setDeleteModal(false);
+  } 
 
   useEffect(() => {
     const handleShowListings = async () => {
@@ -21,6 +35,7 @@ export default function MyListings() {
         if (!res.ok || data.success === false) {
           setListingsError(true);
           setLoadListings(false);
+          return;
         }
 
         setUserListings(data);
@@ -34,7 +49,7 @@ export default function MyListings() {
     handleShowListings();
   }, [currentUser._id]);
 
-  const handleListingDelete = async (listingId) => {
+  const handleDeleteListing = async (listingId) => {
     try {
       const res = await fetch(`/api/listing/delete/${listingId}`, {
         method: 'DELETE',
@@ -49,6 +64,8 @@ export default function MyListings() {
       }
 
       setUserListings((prev) => prev.filter((listing) => listing._id !== listingId));
+
+      closeDeleteModal();
     } catch (error) {
       console.log(error.message);
     }
@@ -86,9 +103,9 @@ export default function MyListings() {
               </Link>
               <div className='flex flex-col items-center gap-1'>
                 <Link to={`/update-listing/${listing._id}`} className='w-full'>
-                  <button className='bg-green-700 text-white rounded-lg p-1 uppercase hover:opacity-95 w-full'>Edit</button>
+                  <button className='bg-green-700 text-white rounded-lg py-1 px-2 hover:opacity-95 w-full'>Edit</button>
                 </Link>
-                <button onClick={() => handleListingDelete(listing._id)} className='bg-red-700 text-white rounded-lg p-1 uppercase hover:opacity-95 w-full'>Delete</button>
+                <button onClick={() => handleDeleteModal(listing)} className='bg-red-700 text-white rounded-lg py-1 px-2 hover:opacity-95 w-full'>Delete</button>
               </div>
             </div>
           ))}
@@ -100,6 +117,14 @@ export default function MyListings() {
           <button className='bg-slate-700 text-white rounded-lg p-3 uppercase hover:opacity-95 w-full'>Add New Listing</button>
         </Link>
       </div>
+      {deleteModal &&
+        <DeleteModal
+          title={`Delete listing ${listingForDeletion?.name}`}
+          message="Are you sure you want to delete this listing?"
+          closeDeleteModal={closeDeleteModal}
+          handleDelete={() => handleDeleteListing(listingForDeletion._id)}
+        />
+      }
     </div>
   )
 }

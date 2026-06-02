@@ -2,6 +2,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useRef, useState, useEffect, useCallback } from 'react';
 import { updateUserStart, updateUserSuccess, updateUserFailure, deleteUserFailure, deleteUserStart, deleteUserSuccess } from '../redux/user/userSlice';
 import { Link } from 'react-router-dom';
+import DeleteModal from '../components/DeleteModal';
 
 export default function Profile() {
   const imgFileRef = useRef(null);
@@ -9,6 +10,10 @@ export default function Profile() {
   
   const { currentUser, loading, error } = useSelector((state) => state.user);
   
+  const [deleteModal, setDeleteModal] = useState(false);
+  const handleDeleteModal = () => setDeleteModal(true);
+  const closeDeleteModal = () => setDeleteModal(false);
+
   const [imgFile, setImgFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
 
@@ -198,6 +203,8 @@ export default function Profile() {
       }
 
       dispatch(deleteUserSuccess(data));
+      
+      closeDeleteModal();
     } catch (err) {
       dispatch(deleteUserFailure(err.message));
     }
@@ -274,9 +281,17 @@ export default function Profile() {
             {loading ? 'Updating...' : 'Update Profile'}
           </button>
       </form>
-      <button onClick={handleDeleteUser} className='bg-red-700 text-white rounded-lg mt-5 p-3 uppercase hover:opacity-95 disabled:opacity-80 w-full'>
+      <button onClick={handleDeleteModal} className='bg-red-700 text-white rounded-lg mt-5 p-3 uppercase hover:opacity-95 disabled:opacity-80 w-full'>
         Delete account
       </button>
+      {deleteModal &&
+        <DeleteModal
+          title="Delete User Account"
+          message="Are you sure you want to delete your account? Once you delete it, you cannot undo this action. Please be certain if you would like to proceed."
+          closeDeleteModal={closeDeleteModal} 
+          handleDelete={handleDeleteUser}
+        />
+      }
       {error &&
         <div className='text-sm text-center font-semibold p-3 w-full text-red-700'>
           {error}
