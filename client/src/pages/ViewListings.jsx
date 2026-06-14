@@ -90,7 +90,7 @@ export default function ViewListings() {
         ) : (
           <>
           {userListings.map((listing) => (
-            <div key={listing._id} className='border rounded-lg p-3 flex justify-between items-center gap-4'>
+            <div key={listing._id} className='border rounded-lg p-3 flex justify-between items-center gap-4 max-[425px]:gap-0 max-[425px]:flex-col'>
               <Link to={`/listing/${listing._id}`}>
                 <img 
                   src={listing.images[0]?.url}
@@ -101,7 +101,7 @@ export default function ViewListings() {
               <Link className='text-slate-700 font-semibold hover:underline truncate flex-1' to={`/listing/${listing._id}`}>
                 <p>{listing.name}</p>
               </Link>
-              <div className='flex flex-col items-center gap-1'>
+              <div className='flex flex-col items-center gap-1 max-[425px]:mt-4'>
                 <Link to={`/update-listing/${listing._id}`} className='w-full'>
                   <button className='bg-green-700 text-white rounded-lg py-1 px-2 hover:opacity-95 w-full'>Edit</button>
                 </Link>

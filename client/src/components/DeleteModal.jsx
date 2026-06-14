@@ -17,7 +17,7 @@ export default function DeleteModal({
 
   return (
     <div className='bg-black/20 fixed inset-0 z-50 w-screen h-screen flex justify-center items-center' >
-      <div className='z-10 w-[30%] xs:w-[35%] h-fit flex flex-col items-center justify-start  bg-slate-400 shadow-md rounded-lg'>
+      <div className='z-10 w-[30%] max-[1024px]:w-[50%] max-[800px]:w-[80%] h-fit flex flex-col items-center justify-start  bg-slate-400 shadow-md rounded-lg'>
         <div className='bg-red-700 p-3 rounded-t-lg w-full'>
           <h1 className='text-xl font-bold text-center text-white'>{title}</h1>
         </div>
