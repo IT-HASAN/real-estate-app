@@ -211,17 +211,17 @@ export default function Search() {
             </div>
           </div>
           <div className='flex items-center gap-2'>
-            <label className='font-semibold'>Sort:</label>
+            <label className='font-semibold'>Sort by:</label>
             <select 
               id="sort_order"
               className='border rounded-lg p-3'
               onChange={handleChange}
               defaultValue={'created_at_desc'} 
             >
+              <option value="createdAt_desc">Newest</option>
+              <option value="createdAt_asc">Oldest</option>
               <option value="regularPrice_desc">Price high to low</option>
               <option value="regularPrice_asc">Price low to high</option>
-              <option value="createdAt_desc">Latest</option>
-              <option value="createdAt_asc">Oldest</option>
             </select>
           </div>
           <button className='bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95'>Search</button>

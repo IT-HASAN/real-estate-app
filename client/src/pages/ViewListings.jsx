@@ -7,20 +7,45 @@ export default function ViewListings() {
   const { currentUser } = useSelector((state) => state.user);
   const [loadListings, setLoadListings] = useState(false);
   const [listingsError, setListingsError] = useState(false);
+
   const [userListings, setUserListings] = useState([]);
+  const [sortType, setSortType] = useState(
+    localStorage.getItem(`userListingsSort_${currentUser?._id}`) || 'newest'
+  );
 
   const [deleteModal, setDeleteModal] = useState(false);
   const [listingForDeletion, setListingForDeletion] = useState(null);
 
+  const sortedListings = [...userListings].sort((a,b) => {
+    switch (sortType) {
+      case 'name-asc':
+        return a.name.localeCompare(b.name);
+      case 'name-desc':
+        return b.name.localeCompare(a.name);
+      case 'oldest':
+        return a._id.localeCompare(b._id);
+      case 'newest':
+        return b._id.localeCompare(a._id);
+      default:
+        return 0;
+    }
+  });
+
+  const handleSortChange = (e) => {
+    const selectedValue = e.target.value;
+    setSortType(selectedValue);
+    localStorage.setItem(`userListingsSort_${currentUser?._id}`, selectedValue);
+  };
+
   const handleDeleteModal = (listing) => {
     setListingForDeletion(listing);
     setDeleteModal(true);
-  } 
+  };
 
   const closeDeleteModal = () => {
     setListingForDeletion(null);
     setDeleteModal(false);
-  } 
+  };
 
   useEffect(() => {
     const handleShowListings = async () => {
@@ -49,9 +74,9 @@ export default function ViewListings() {
     handleShowListings();
   }, [currentUser._id]);
 
-  const handleDeleteListing = async (listingId) => {
+  const handleDeleteListing = async () => {
     try {
-      const res = await fetch(`/api/listing/delete/${listingId}`, {
+      const res = await fetch(`/api/listing/delete/${listingForDeletion._id}`, {
         method: 'DELETE',
         credentials: 'include'
       });
@@ -63,7 +88,7 @@ export default function ViewListings() {
         return;
       }
 
-      setUserListings((prev) => prev.filter((listing) => listing._id !== listingId));
+      setUserListings((prev) => prev.filter((listing) => listing._id !== listingForDeletion._id));
 
       closeDeleteModal();
     } catch (error) {
@@ -74,6 +99,21 @@ export default function ViewListings() {
   return (
     <div className='p-3 max-w-lg mx-auto'>
       <h1 className='text-3xl font-semibold text-center my-7'>Property Listings</h1>
+      <div className='flex items-center justify-between gap-2 mb-2 p-3 bg-slate-700 rounded-lg text-white'>
+        <label htmlFor="sortListing" className='font-semibold'>Sort by:</label>
+        <select 
+          id="sortListing"
+          name="sortListing"
+          className='border rounded-lg p-2 bg-slate-600 text-white cursor-pointer outline-none'
+          onChange={handleSortChange}
+          value={sortType}
+        >
+          <option value="newest">Newest</option>
+          <option value="oldest">Oldest</option>
+          <option value="name-asc">Name Ascending</option>
+          <option value="name-desc">Name Descending</option>
+        </select>
+      </div>
       <div className='flex flex-col gap-4 overflow-y-auto h-[450px] bg-white p-3 border rounded-lg'>
         {loadListings ? (
           <div className='text-slate-700 font-semibold p-3 flex justify-center'>
@@ -83,13 +123,12 @@ export default function ViewListings() {
           <div className='text-red-700 font-semibold p-3 flex justify-center'>
             Error fetching listings
           </div>
-        ) : userListings && userListings.length < 1 ? (
+        ) : userListings.length === 0 ? (
           <div className='text-slate-700 font-semibold p-3 flex justify-center'>
             No listings made. Click button below to create one.
           </div>
         ) : (
-          <>
-          {userListings.map((listing) => (
+          sortedListings.map((listing) => (
             <div key={listing._id} className='border rounded-lg p-3 flex justify-between items-center gap-4 max-[425px]:gap-0 max-[425px]:flex-col'>
               <Link to={`/listing/${listing._id}`}>
                 <img 
@@ -108,8 +147,7 @@ export default function ViewListings() {
                 <button onClick={() => handleDeleteModal(listing)} className='bg-red-700 text-white rounded-lg py-1 px-2 hover:opacity-95 w-full'>Delete</button>
               </div>
             </div>
-          ))}
-          </>
+          ))
         )}
       </div>
       <div className='flex justify-center'>
@@ -122,7 +160,7 @@ export default function ViewListings() {
           title={`Delete listing ${listingForDeletion?.name}`}
           message="Are you sure you want to delete this listing?"
           closeDeleteModal={closeDeleteModal}
-          handleDelete={() => handleDeleteListing(listingForDeletion._id)}
+          handleDelete={handleDeleteListing}
         />
       }
     </div>
