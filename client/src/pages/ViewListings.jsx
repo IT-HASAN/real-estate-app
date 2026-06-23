@@ -98,34 +98,39 @@ export default function ViewListings() {
   
   return (
     <div className='p-3 max-w-lg mx-auto'>
-      <h1 className='text-3xl font-semibold text-center my-7'>Property Listings</h1>
-      <div className='flex items-center justify-between gap-2 mb-2 p-3 bg-slate-700 rounded-lg text-white'>
-        <label htmlFor="sortListing" className='font-semibold'>Sort by:</label>
-        <select 
-          id="sortListing"
-          name="sortListing"
-          className='border rounded-lg p-2 bg-slate-600 text-white cursor-pointer outline-none'
-          onChange={handleSortChange}
-          value={sortType}
-        >
-          <option value="newest">Newest</option>
-          <option value="oldest">Oldest</option>
-          <option value="name-asc">Name Ascending</option>
-          <option value="name-desc">Name Descending</option>
-        </select>
+      <h1 className='text-stone-600 text-3xl font-semibold text-center mt-7'>Property Listings</h1>
+      <div className='flex items-end gap-2 mb-2 py-3 max-[425px]:flex-col'>
+        <Link to={'/create-listing'} className='w-full'>
+          <button className='bg-slate-700 hover:bg-slate-800 text-white rounded-lg p-3 uppercase w-full'>Add New Listing</button>
+        </Link>
+        <div className='flex flex-col max-[425px]:w-full'>
+          <label htmlFor="sortListing" className='font-semibold'>Sort by:</label>
+          <select 
+            id="sortListing"
+            name="sortListing"
+            className='border border-gray-300 rounded-lg p-2 cursor-pointer outline-none'
+            onChange={handleSortChange}
+            value={sortType}
+          >
+            <option value="newest">Newest</option>
+            <option value="oldest">Oldest</option>
+            <option value="name-asc">Name Ascending</option>
+            <option value="name-desc">Name Descending</option>
+          </select>  
+        </div>
       </div>
-      <div className='flex flex-col gap-4 overflow-y-auto h-[450px] bg-white p-3 border rounded-lg'>
+      <div className='flex flex-col gap-4 overflow-y-auto h-[450px] bg-white p-3 border border-gray-300 rounded-lg'>
         {loadListings ? (
-          <div className='text-slate-700 font-semibold p-3 flex justify-center'>
+          <div className='text-slate-600 font-semibold p-3 flex justify-center'>
             Loading...
           </div>
         ) : listingsError ? (
-          <div className='text-red-700 font-semibold p-3 flex justify-center'>
+          <div className='text-red-600 font-semibold p-3 flex justify-center'>
             Error fetching listings
           </div>
         ) : userListings.length === 0 ? (
-          <div className='text-slate-700 font-semibold p-3 flex justify-center'>
-            No listings made. Click button below to create one.
+          <div className='text-slate-900 font-semibold p-3 flex justify-center'>
+            No listings made. Click 'ADD NEW LISTING' button above to create one.
           </div>
         ) : (
           sortedListings.map((listing) => (
@@ -137,23 +142,18 @@ export default function ViewListings() {
                   className='h-16 w-16 object-contain'
                 />
               </Link>
-              <Link className='text-slate-700 font-semibold hover:underline truncate flex-1' to={`/listing/${listing._id}`}>
+              <Link className='text-slate-900 font-semibold hover:underline truncate flex-1' to={`/listing/${listing._id}`}>
                 <p>{listing.name}</p>
               </Link>
-              <div className='flex flex-col items-center gap-1 max-[425px]:mt-4'>
+              <div className='flex flex-col max-[425px]:flex-row items-center gap-1 max-[425px]:mt-4'>
                 <Link to={`/update-listing/${listing._id}`} className='w-full'>
-                  <button className='bg-green-700 text-white rounded-lg py-1 px-2 hover:opacity-95 w-full'>Edit</button>
+                  <button className='bg-green-700 hover:bg-green-800 text-white rounded-lg py-1 px-2 w-full'>Edit</button>
                 </Link>
-                <button onClick={() => handleDeleteModal(listing)} className='bg-red-700 text-white rounded-lg py-1 px-2 hover:opacity-95 w-full'>Delete</button>
+                <button onClick={() => handleDeleteModal(listing)} className='bg-red-700 hover:bg-red-800 text-white rounded-lg py-1 px-2 w-full'>Delete</button>
               </div>
             </div>
           ))
         )}
-      </div>
-      <div className='flex justify-center'>
-        <Link to={'/create-listing'} className='w-full pt-2'>
-          <button className='bg-slate-700 text-white rounded-lg p-3 uppercase hover:opacity-95 w-full'>Add New Listing</button>
-        </Link>
       </div>
       {deleteModal &&
         <DeleteModal

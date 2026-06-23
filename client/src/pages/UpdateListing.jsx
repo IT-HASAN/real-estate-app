@@ -127,10 +127,9 @@ export default function UpdateListing() {
     setConfirmedFiles((prev) => {
       const newFiles = filesWithPreview.filter(
         (newFile) =>
-          !prev.some(
-            (f) =>
-              f.file.name === newFile.file.name &&
-              f.file.size === newFile.file.size
+          !prev.some((f) =>
+            f.file.name === newFile.file.name &&
+            f.file.size === newFile.file.size
           )
       );
 
@@ -214,13 +213,13 @@ export default function UpdateListing() {
   
   return (
     <main className='p-3 max-w-4xl mx-auto'>
-      <h1 className='text-3xl font-semibold text-center my-7'>Update a Listing</h1>
+      <h1 className='text-stone-600 text-3xl font-semibold text-center my-7'>Update a Listing</h1>
       <form onSubmit={handleSubmit} className='flex flex-col sm:flex-row gap-4'>
         <div className='flex flex-col gap-4 flex-1'>
           <input
             type="text"
             placeholder="Name"
-            className='border p-3 rounded-lg focus:outline-none'
+            className='p-3 border border-gray-300 rounded-lg focus:outline-none'
             id="name"
             maxLength="62"
             minLength="10"
@@ -231,7 +230,7 @@ export default function UpdateListing() {
           <textarea
             type="text"
             placeholder="Description"
-            className='border p-3 rounded-lg focus:outline-none'
+            className='p-3 border border-gray-300 rounded-lg focus:outline-none'
             id="description"
             required
             onChange={handleChange}
@@ -240,7 +239,7 @@ export default function UpdateListing() {
           <input
             type="text"
             placeholder="Address"
-            className='border p-3 rounded-lg focus:outline-none'
+            className='p-3 border border-gray-300 rounded-lg focus:outline-none'
             id="address"
             required
             onChange={handleChange}
@@ -375,14 +374,14 @@ export default function UpdateListing() {
             </div>
           )}
         </div>
-        <div className='flex flex-col flex-1 gap-4'>
+        <div className='flex flex-col flex-1 gap-2'>
           <p className='font-semibold'>Images:
-            <span className='font-normal text-gray-600 ml-2'>The first image will be the cover (max 6)</span>
+            <span className='font-normal text-slate-600 ml-2'>The first image will be the cover (max 6)</span>
           </p>
           <div className='flex gap-4'>
             <input 
               onChange={handleImageChange}
-              className='p-3 border border-gray-300 rounded w-full'
+              className='p-3 border border-gray-300 rounded-lg w-full'
               type="file"
               id="images"
               accept="image/*"
@@ -390,35 +389,45 @@ export default function UpdateListing() {
               ref={fileRef}
             />
           </div>
-          <p className='text-red-700 text-sm'>{imageUploadError}</p>
+          <p className='text-red-600 text-sm'>{imageUploadError}</p>
           {formData.images.length > 0 && formData.images.map((img, index) => (
-            <div key={index} className='flex justify-between p-3 border items-center'>
-              <img src={img.url} alt="listing image" className='w-20 h-20 object-contain rounded-lg' />
-              <button type="button" onClick={() => handleRemoveImage(index)} className='bg-red-700 text-white rounded-lg p-1 uppercase hover:opacity-95'>Delete</button>
+            <div key={index} className='flex justify-between border rounded-lg items-center'>
+              <img 
+                src={img.url} 
+                alt="listing image"
+                className='w-20 h-fit object-contain rounded-lg' 
+              />
+              <button 
+                type="button" 
+                onClick={() => handleRemoveImage(index)} 
+                className='bg-red-700 hover:bg-red-800 text-white rounded-lg py-1 px-2 uppercase'
+              >
+                Delete
+              </button>
             </div>
           ))}
 
           {confirmedFiles.map((file, i) => (
-            <div key={i} className='flex justify-between p-3 border items-center'>
+            <div key={i} className='flex justify-between border rounded-lg items-center'>
               <img 
                 src={file.preview}
                 alt="listing image"
-                className='w-20 h-20 object-contain rounded-lg' 
+                className='w-20 h-fit object-contain rounded-lg' 
               />
               <button
                 type="button"
                 onClick={() => handleRemoveNewFile(i)}
-                className="bg-red-700 text-white rounded-lg p-1 uppercase hover:opacity-95"
+                className='bg-red-700 hover:bg-red-800 text-white rounded-lg py-1 px-2 uppercase'
               >
                 Remove
               </button>
             </div>
           ))}
 
-          <button disabled={submitting} className='p-3 bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80'>
+          <button disabled={submitting} className='p-3 bg-slate-700 hover:bg-slate-800 text-white rounded-lg uppercase disabled:opacity-80'>
             {submitting ? 'Updating...' : 'Update listing'}
           </button>
-          {error && <p className='text-red-700 text-sm'>{error}</p>}
+          {error && <p className='text-red-600 text-sm'>{error}</p>}
         </div>
       </form>
     </main>

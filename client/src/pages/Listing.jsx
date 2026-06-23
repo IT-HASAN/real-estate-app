@@ -75,13 +75,13 @@ export default function Listing() {
             </p>
           )}
           <div className='flex flex-col max-w-4xl mx-auto p-3 my-7 gap-4'>
-            <p className='text-2xl font-semibold'>
+            <p className='text-stone-600 text-2xl font-semibold'>
               {listing.name} - £{""}
               {listing.offer ? listing.discountedPrice.toLocaleString('en-GB') : listing.regularPrice.toLocaleString('en-GB')}
               {listing.type === 'rent' && ' / month'}
             </p>
-            <p className='flex items-center mt-6 gap-2 text-slate-600 text-sm'>
-              <FaMapMarkerAlt className='text-green-700' />
+            <p className='flex items-center mt-6 gap-2 text-slate-600 text-sm font-semibold'>
+              <FaMapMarkerAlt className='text-green-600' />
               {listing.address}
             </p>
             <div className='flex gap-4'>
@@ -94,13 +94,13 @@ export default function Listing() {
                 </p>
               )}
             </div>
-            <p className='text-slate-800'>
-              <span className='font-semibold text-black'>
+            <p className='text-slate-600'>
+              <span className='font-semibold text-slate-900'>
                 Description - {' '}
               </span> 
               {listing.description}
             </p>
-            <ul className='text-green-900 font-semibold text-sm flex flex-wrap items-center gap-4 sm:gap-6'>
+            <ul className='text-slate-900 font-semibold text-sm flex flex-wrap items-center gap-4 sm:gap-6'>
               <li className='flex items-center gap-1 whitespace-nowrap'>
                 <FaBed className='text-lg' />
                 {listing.bedrooms > 1 ? `${listing.bedrooms} bedrooms ` : `${listing.bedrooms} bedroom `}
@@ -120,7 +120,7 @@ export default function Listing() {
             </ul>
             {currentUser && listing.userRef !== currentUser._id && !contact && (
               <button onClick={() => setContact(true)} 
-                className='bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 p-3'>
+                className='bg-slate-700 hover:bg-slate-800 text-white rounded-lg uppercase p-3'>
                 Contact Landlord
               </button>
             )}

@@ -212,7 +212,7 @@ export default function Profile() {
 
   return (
     <div className='p-3 max-w-lg mx-auto'>
-      <h1 className='text-3xl font-semibold text-center my-7'>User Profile</h1>
+      <h1 className='text-stone-600 text-3xl font-semibold text-center mt-7 mb-5'>User Profile</h1>
       <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
         <input 
             onChange={(e) => {
@@ -243,13 +243,13 @@ export default function Profile() {
           />
           <p className='text-sm self-center font-semibold'>
             {fileUploading ? (
-              <span className='text-slate-700'>Uploading...</span>
+              <span className='text-slate-600'>Uploading...</span>
             ) : fileUploadError !== '' ? (
-              <span className='text-red-700'>{fileUploadError}</span>
+              <span className='text-red-600'>{fileUploadError}</span>
             ) : fileUploadSuccess !== '' ? (
-              <span className='text-green-700'>{fileUploadSuccess}</span>
+              <span className='text-green-600'>{fileUploadSuccess}</span>
             ) : (
-              <span>Click image to change</span>
+              <span className='text-slate-900'>Click image to change</span>
             )}
           </p>
           <input 
@@ -257,7 +257,7 @@ export default function Profile() {
             placeholder="username"
             value={formData.username}
             id="username"
-            className='border p-3 rounded-lg focus:outline-none'
+            className='p-3 border border-gray-300 rounded-lg focus:outline-none'
             onChange={handleChange}
           />
           <input
@@ -265,23 +265,23 @@ export default function Profile() {
             placeholder="email"
             value={formData.email}
             id="email"
-            className='border p-3 rounded-lg focus:outline-none'
+            className='p-3 border border-gray-300 rounded-lg focus:outline-none'
             onChange={handleChange}
           />
           <input
             type="password"
             placeholder="password"
             id="password"
-            className='border p-3 rounded-lg focus:outline-none'
+            className='p-3 border border-gray-300 rounded-lg focus:outline-none'
             onChange={handleChange}
           />
           <button
           disabled={loading}
-          className='bg-slate-700 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80'>
+          className='bg-slate-700 hover:bg-slate-800 text-white rounded-lg p-3 uppercase disabled:opacity-80'>
             {loading ? 'Updating...' : 'Update Profile'}
           </button>
       </form>
-      <button onClick={handleDeleteModal} className='bg-red-700 text-white rounded-lg mt-5 p-3 uppercase hover:opacity-95 disabled:opacity-80 w-full'>
+      <button onClick={handleDeleteModal} className='bg-red-700 hover:bg-red-800 text-white rounded-lg mt-5 p-3 uppercase disabled:opacity-80 w-full'>
         Delete account
       </button>
       {deleteModal &&
@@ -293,12 +293,12 @@ export default function Profile() {
         />
       }
       {error &&
-        <div className='text-sm text-center font-semibold p-3 w-full text-red-700'>
+        <div className='text-sm text-center font-semibold p-3 w-full text-red-600'>
           {error}
         </div>
       }
       {updateSuccess !== '' && 
-        <div className='text-sm text-center font-semibold p-3 w-full text-green-700'>
+        <div className='text-sm text-center font-semibold p-3 w-full text-green-600'>
           {updateSuccess}
         </div>
       }

@@ -57,11 +57,11 @@ export default function Header() {
       <div className='flex justify-between items-center max-w-6xl mx-auto p-3 relative'>
         <Link to="/">
         <h1 className='font-bold text-sm sm:text-xl flex flex-wrap'>
-          <span className='text-slate-500'>Real</span>
-          <span className='text-slate-700'>Estate</span>
+          <span className='text-blue-500'>MERN</span>
+          <span className='text-blue-900'>Estate</span>
         </h1>
         </Link>
-        <form onSubmit={handleSubmit} className='bg-slate-100 p-3 rounded-lg flex items-center'>
+        <form onSubmit={handleSubmit} className='bg-white p-3 border border-gray-300 rounded-lg flex items-center'>
           <input 
             type="text"
             placeholder="Search..."
@@ -70,7 +70,7 @@ export default function Header() {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           <button>
-            <FaSearch className='text-slate-600' />
+            <FaSearch className='text-slate-900' />
           </button>
         </form>
         <div className='w-fit h-fit'>
@@ -78,11 +78,11 @@ export default function Header() {
             <img className='rounded-full h-7 w-7 object-cover cursor-pointer' src={currentUser.avatar} alt="profile" onClick={handleMenuClicked} />
           ) : (
             <Link to="/sign-in">
-              <button className='bg-slate-700 text-white rounded-lg py-1 px-2 hover:opacity-95'>Sign in</button>
+              <button className='bg-slate-700 hover:bg-slate-800 text-white rounded-lg py-1 px-2'>Sign in</button>
             </Link>
           )}
         </div>
-        <div className={menuClicked ? 'absolute top-[100%] right-0 z-[5] rounded-lg bg-slate-200 shadow-md' : 'hidden'} onMouseLeave={closeMenu}>
+        <div className={menuClicked ? 'absolute top-[100%] right-0 z-[5] rounded-b-lg bg-slate-200 shadow-md' : 'hidden'} onMouseLeave={closeMenu}>
           {currentUser ? (
           <div className='flex flex-col p-2'>
             <img className='rounded-full h-8 w-8 object-cover self-center' src={currentUser.avatar} alt="user profile picture" />
@@ -98,7 +98,7 @@ export default function Header() {
             <Link to="/view-listings">
               <li className='text-slate-700 text-sm hover:bg-slate-300 p-2 border-b-slate-300 border-b-[1px]' onClick={closeMenu}>Property Listings</li>
             </Link>
-              <li className='text-slate-700 text-sm hover:bg-slate-300 p-2 cursor-pointer' onClick={handleSignOut}>Sign out</li>
+              <li className='text-slate-700 text-sm hover:bg-slate-300 hover:rounded-b-lg p-2 cursor-pointer' onClick={handleSignOut}>Sign out</li>
           </ul>
         </div>
       </div>

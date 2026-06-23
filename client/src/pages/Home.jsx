@@ -47,21 +47,19 @@ export default function Home() {
   return (
     <div>
       <div className='flex flex-col gap-6 py-28 px-3 max-w-6xl mx-auto'>
-        <h1 className='text-slate-700 font-bold text-3xl lg:text-6xl'>
-          Find your next <span className='text-slate-500'>perfect</span>
+        <h1 className='text-stone-600 font-bold text-3xl lg:text-6xl'>
+          Find your next <span className='text-stone-400'>perfect</span>
         <br />
         place with ease
         </h1>
-        <div className="text-gray-400 text-xs sm:text-sm">
-          Real Estate will help you find your new home with our expert support that are always available.
-          <br />
-          We have a wide range of properties for you to choose from.
-        </div>
-        <Link to={"/search"} className='text-xs sm:text-sm text-blue-700 font-semibold hover:underline w-fit'>
-          Let's get started...
-        </Link>
-        <Link to={"/about"} className='text-xs sm:text-sm text-blue-700 font-semibold hover:underline w-fit'>
-          About Real Estate
+        <p className='font-normal text-slate-600 ml-2'>
+          MERN Estate will help you to achieve you real estate goals, whether you are looking to buy, sell or rent a property.
+        </p>
+        <p className='font-normal text-slate-600 ml-2'>
+          Create and manage listings for properties to put on sale or rent for others or make use of the search features available to help you find your new home with a wide range of properties to choose from to buy or rent.
+        </p>
+        <Link to={"/search"} className='w-fit'>
+          <button className='bg-slate-700 hover:bg-slate-800 text-white rounded-lg py-1 px-3'>Get started here</button>
         </Link>
       </div>
 
@@ -84,8 +82,8 @@ export default function Home() {
         {offerListings && offerListings.length > 0 && (
           <div className="">
             <div className='my-3'>
-              <h2 className='text-2xl font-semibold text-slate-600'>Recent offers</h2>
-              <Link className='text-sm text-blue-700 font-semibold hover:underline' to={'/search?offer=true'}>
+              <h2 className='text-2xl font-semibold text-stone-600'>Recent offers</h2>
+              <Link className='text-sm font-semibold text-blue-700 hover:text-blue-800 hover:underline' to={'/search?offer=true'}>
                 Show more offers
               </Link>
             </div>
@@ -99,8 +97,8 @@ export default function Home() {
         {rentListings && rentListings.length > 0 && (
           <div className="">
             <div className='my-3'>
-              <h2 className='text-2xl font-semibold text-slate-600'>Recent places for rent</h2>
-              <Link className='text-sm text-blue-700 font-semibold hover:underline' to={'/search?type=rent'}>
+              <h2 className='text-2xl font-semibold text-stone-600'>Recent places for rent</h2>
+              <Link className='text-sm font-semibold text-blue-700 hover:text-blue-800 hover:underline' to={'/search?type=rent'}>
                 Show more places for rent
               </Link>
             </div>
@@ -114,8 +112,8 @@ export default function Home() {
         {saleListings && saleListings.length > 0 && (
           <div className="">
             <div className='my-3'>
-              <h2 className='text-2xl font-semibold text-slate-600'>Recent places for sale</h2>
-              <Link className='text-sm text-blue-700 font-semibold hover:underline' to={'/search?type=sale'}>
+              <h2 className='text-2xl font-semibold text-stone-600'>Recent places for sale</h2>
+              <Link className='text-sm font-semibold text-blue-700 hover:text-blue-800 hover:underline' to={'/search?type=sale'}>
                 Show more places for sales
               </Link>
             </div>
